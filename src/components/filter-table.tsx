@@ -116,7 +116,24 @@ export const columns: ColumnDef<Payment>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Email
+          Old Content
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue('changes')}</div>
+    ),
+  },
+  {
+    accessorKey: 'changes',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          New Content
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -201,7 +218,7 @@ export function FilterTable() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 px-1 gap-1">
         <Input
           placeholder="Filter content..."
           value={(table.getColumn('changes')?.getFilterValue() as string) ?? ''}

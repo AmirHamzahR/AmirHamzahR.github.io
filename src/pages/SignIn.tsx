@@ -1,11 +1,27 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork a and a a to sign up if you do not have an account. The second column has a cover image.";
 
 export default function SignInPage() {
+  const usernameRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
+
+  function handleSignIn() {
+    const username = usernameRef.current?.value;
+    const password = passwordRef.current?.value;
+    console.log(username, password);
+    console.log(username === 'wendellnoi' && password === 'shuyingmia');
+    if (username === 'wendellnoi' && password === 'shuyingmia') {
+      return navigate('/');
+    }
+  }
+
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
@@ -24,6 +40,7 @@ export default function SignInPage() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                ref={usernameRef}
               />
             </div>
             <div className="grid gap-2">
@@ -36,9 +53,9 @@ export default function SignInPage() {
                   Forgot your password?
                 </a>
               </div>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" required ref={passwordRef} />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" onClick={handleSignIn}>
               Login
             </Button>
             <Button variant="outline" className="w-full">

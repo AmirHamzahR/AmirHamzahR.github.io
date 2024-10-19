@@ -8,11 +8,18 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useNavigate } from 'react-router-dom';
 
 const description =
   "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a a to login if you already have an account";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
+  function handleRedirect() {
+    console.log('click');
+    navigate('/🤣😂😘💀');
+  }
   return (
     <Card className="max-w-screen-xl">
       <CardHeader>
@@ -46,7 +53,7 @@ export default function LoginPage() {
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" onClick={handleRedirect}>
             Create an account
           </Button>
           <Button variant="outline" className="w-full">
@@ -55,7 +62,7 @@ export default function LoginPage() {
         </div>
         <div className="mt-4 text-center text-sm">
           Already have an account?{' '}
-          <a href="#" className="underline">
+          <a href="/signin" className="underline">
             Sign in
           </a>
         </div>
