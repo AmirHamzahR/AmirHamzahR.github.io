@@ -30,7 +30,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-import { ToolbarSlot } from '@react-pdf-viewer/toolbar';
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
@@ -44,42 +43,42 @@ export default function PolicyComparisonPage() {
   const [doc1, setDoc1] = useState<string | null>(null);
   const [doc2, setDoc2] = useState<string | null>(null);
 
-  const renderToolbar = (Toolbar: (props) => ReactElement) => (
-    <Toolbar>
-      {(slots: ToolbarSlot) => {
-        const { ZoomOut } = slots;
-        return (
-          <div
-            style={{
-              alignItems: 'center',
-              display: 'flex',
-            }}
-          >
-            <div style={{ padding: '0px 2px' }}>
-              <ZoomOut>
-                {(props) => (
-                  <button
-                    style={{
-                      backgroundColor: '#357edd',
-                      border: 'none',
-                      borderRadius: '4px',
-                      color: '#ffffff',
-                      cursor: 'pointer',
-                      padding: '8px',
-                    }}
-                    onClick={props.onClick}
-                  >
-                    Zoom out
-                  </button>
-                )}
-              </ZoomOut>
-            </div>
-            ...
-          </div>
-        );
-      }}
-    </Toolbar>
-  );
+  // const renderToolbar = (Toolbar: (props) => ReactElement) => (
+  //   <Toolbar>
+  //     {(slots: ToolbarSlot) => {
+  //       const { ZoomOut } = slots;
+  //       return (
+  //         <div
+  //           style={{
+  //             alignItems: 'center',
+  //             display: 'flex',
+  //           }}
+  //         >
+  //           <div style={{ padding: '0px 2px' }}>
+  //             <ZoomOut>
+  //               {(props) => (
+  //                 <button
+  //                   style={{
+  //                     backgroundColor: '#357edd',
+  //                     border: 'none',
+  //                     borderRadius: '4px',
+  //                     color: '#ffffff',
+  //                     cursor: 'pointer',
+  //                     padding: '8px',
+  //                   }}
+  //                   onClick={props.onClick}
+  //                 >
+  //                   Zoom out
+  //                 </button>
+  //               )}
+  //             </ZoomOut>
+  //           </div>
+  //           ...
+  //         </div>
+  //       );
+  //     }}
+  //   </Toolbar>
+  // );
 
   const defaultLayoutPluginInstance1 = defaultLayoutPlugin();
   const defaultLayoutPluginInstance2 = defaultLayoutPlugin();
@@ -368,7 +367,7 @@ export default function PolicyComparisonPage() {
                 Document Contents
               </legend>
               <div className="grid gap-3 overflow-x-auto w-full">
-                <FilterTable />
+                <FilterTable secondColumn="Impact" />
                 {/* <Label htmlFor="role">Role</Label>
                     <Select defaultValue="system">
                       <SelectTrigger>
