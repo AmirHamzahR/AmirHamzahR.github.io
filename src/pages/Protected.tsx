@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-const ProtectedPage = ({ isAuthenticated }) => {
+const ProtectedPage = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
