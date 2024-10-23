@@ -3,8 +3,6 @@ import packageJson from '../../package.json';
 
 const pdfjsVersion = packageJson.dependencies['pdfjs-dist'];
 
-import { changes } from '@/data/matching-section';
-
 import { FilterTable } from '@/components/filter-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -104,15 +102,15 @@ export default function PolicyComparisonPage() {
   //   console.log(highlightedPhrases1);
 
   const searchPluginInstance1 = searchPlugin({
-    keyword: changes.map(
-      (change) => change.highlighted_phrases_from_version_1[0]
-    ),
+    //   keyword: changes.map(
+    //     (change) => change.highlighted_phrases_from_version_1[0]
+    //   ),
   });
 
   const searchPluginInstance2 = searchPlugin({
-    keyword: changes.map(
-      (change) => change.highlighted_phrases_from_version_2[0]
-    ),
+    //   keyword: changes.map(
+    //     (change) => change.highlighted_phrases_from_version_2[0]
+    //   ),
   });
 
   function handleDoc1Upload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -146,7 +144,7 @@ export default function PolicyComparisonPage() {
   return (
     /*MAIN SETTINGS*/
     <div className="flex flex-col">
-      <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
+      <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-5">
         <h1 className="text-xl font-semibold">Policy Comparison</h1>
         <Drawer>
           <DrawerTrigger asChild>

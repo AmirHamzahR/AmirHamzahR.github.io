@@ -1,11 +1,11 @@
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  DotsHorizontalIcon,
-} from '@radix-ui/react-icons';
+'use client';
+
+import { CaretSortIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import {
   ColumnDef,
   ColumnFiltersState,
+  Row,
+  RowSelectionState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -18,14 +18,10 @@ import {
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
@@ -37,169 +33,213 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { changes } from '@/data/matching-section';
 
 const data: Payment[] = [
   {
     id: 'm5gr84i9',
-    changes: 'People dont submit',
-    section: 442.3,
-    impact: 'low',
+    amount: 316,
+    status: 'success',
+    email: 'ken99@yahoo.com',
   },
   {
     id: '3u1reuv4',
-    changes: 'Why am i doing this at 2am',
-    section: 44.3,
-    impact: 'medium',
+    amount: 242,
+    status: 'success',
+    email: 'Abe45@gmail.com',
   },
   {
     id: 'derv1ws0',
-    changes: 'why',
-    section: 234.3,
-    impact: 'medium',
+    amount: 837,
+    status: 'processing',
+    email: 'Monserrat44@gmail.com',
   },
   {
     id: '5kma53ae',
-    changes: 'what should i put',
-    section: 4.3,
-    impact: 'high',
+    amount: 874,
+    status: 'success',
+    email: 'Silas22@gmail.com',
   },
   {
     id: 'bhqecj4p',
-    changes: 'mild change boi',
-    section: 721.0,
-    impact: 'high',
+    amount: 721,
+    status: 'failed',
+    email: 'carmella@hotmail.com',
   },
 ];
 
 export type Payment = {
   id: string;
-  changes: string;
-  section: number;
-  impact: 'high' | 'medium' | 'low';
+  amount: number;
+  status: 'pending' | 'processing' | 'success' | 'failed';
+  email: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'section',
-    header: 'Section',
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('section')}</div>
-    ),
-  },
-  {
-    accessorKey: 'changes',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Old Content
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue('changes')}</div>
-    ),
-  },
-  {
-    accessorKey: 'changes',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          New Content
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue('changes')}</div>
-    ),
-  },
-  {
-    accessorKey: 'impact',
-    header: () => <div className="text-right">Impact</div>,
-    cell: ({ row }) => {
-      // Format the amount as a dollar amount
-      //   const formatted = new Intl.NumberFormat('en-US', {
-      //     style: 'currency',
-      //     currency: 'USD',
-      //   }).format(amount);
+const ChangeDetailsJoin = changes.map((change) => {
+  const phrase1 = change.highlighted_phrases_from_version_1.join(', ');
+  const phrase2 = change.highlighted_phrases_from_version_2.join(', ');
 
-      return (
-        <div className="text-right font-medium">{row.getValue('impact')}</div>
-      );
-    },
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
+  return {
+    ...change,
+    highlighted_phrases_from_version_1: phrase1,
+    highlighted_phrases_from_version_2: phrase2,
+  };
+});
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+console.log(ChangeDetailsJoin);
 
-export function FilterTable() {
+export type Change = {
+  section: string;
+  difference: string;
+  impact: string;
+  highlighted_phrases_from_version_1: string;
+  highlighted_phrases_from_version_2: string;
+};
+
+function columns(secondColumn: string): ColumnDef<Change>[] {
+  return [
+    // {
+    //   id: 'select',
+    //   header: ({ table }) => (
+    //     <Checkbox
+    //       checked={
+    //         table.getIsAllPageRowsSelected() ||
+    //         (table.getIsSomePageRowsSelected() && 'indeterminate')
+    //       }
+    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+    //       aria-label="Select all"
+    //     />
+    //   ),
+    //   cell: ({ row }) => (
+    //     <Checkbox
+    //       checked={row.getIsSelected()}
+    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+    //       aria-label="Select row"
+    //     />
+    //   ),
+    //   enableSorting: false,
+    //   enableHiding: false,
+    // },
+    {
+      accessorKey: 'section',
+      header: 'Section',
+      cell: ({ row }: { row: Row<Change> }) => (
+        <div className="capitalize max-w-20 text-xs">
+          {row.getValue('section') as string}
+        </div>
+      ),
+    },
+    // {
+    //   accessorKey: 'highlighted_phrases_from_version_1',
+    //   header: ({ column }) => {
+    //     return (
+    //       <Button
+    //         variant="ghost"
+    //         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //       >
+    //         Old Content
+    //         <CaretSortIcon className="ml-2 h-4 w-4" />
+    //       </Button>
+    //     );
+    //   },
+    //   cell: ({ row }) => (
+    //     <div className="lowercase">
+    //       {(
+    //         row.getValue('highlighted_phrases_from_version_1') as string
+    //       ).substring(0, 20)}
+    //       ...
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'highlighted_phrases_from_version_2',
+    //   header: ({ column }) => {
+    //     return (
+    //       <Button
+    //         variant="ghost"
+    //         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //       >
+    //         New Content
+    //         <CaretSortIcon className="ml-2 h-4 w-4" />
+    //       </Button>
+    //     );
+    //   },
+    //   cell: ({ row }) => (
+    //     <div className="lowercase">
+    //       {(
+    //         row.getValue('highlighted_phrases_from_version_2') as string
+    //       ).substring(0, 20)}
+    //       ...
+    //     </div>
+    //   ),
+    // },
+    {
+      accessorKey: secondColumn.toLowerCase(),
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            {secondColumn}
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="text-xs">
+          {row.getValue(secondColumn.toLowerCase()) as string}
+        </div>
+      ),
+    },
+    // {
+    //   id: 'actions',
+    //   enableHiding: false,
+    //   cell: ({ row }) => {
+    //     const data = row.original;
+
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild>
+    //           <Button variant="ghost" className="h-8 w-8 p-0">
+    //             <span className="sr-only">Open menu</span>
+    //             <DotsHorizontalIcon className="h-4 w-4" />
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent align="end">
+    //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    //           <DropdownMenuItem
+    //             onClick={() => navigator.clipboard.writeText(data.section)}
+    //           >
+    //             Copy payment ID
+    //           </DropdownMenuItem>
+    //           <DropdownMenuSeparator />
+    //           <DropdownMenuItem>View customer</DropdownMenuItem>
+    //           <DropdownMenuItem>View payment details</DropdownMenuItem>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     );
+    //   },
+    // },
+  ];
+}
+
+export function FilterTable({ secondColumn }: { secondColumn: string }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  // const [pagination, setPagination] = React.useState({
+  //   pageIndex: 0, //initial page index
+  //   pageSize: 5, //default page size
+  // });
 
-  const table = useReactTable({
-    data,
-    columns,
+  const table = useReactTable<Change>({
+    data: ChangeDetailsJoin, // Your data should match the `Change` type
+    columns: columns(secondColumn), // Your columns already typed as `ColumnDef<Change>[]`
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -208,22 +248,24 @@ export function FilterTable() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    // onPaginationChange: setPagination,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      // pagination,
     },
   });
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 px-1 gap-1">
+      <div className="flex items-center py-4 gap-2 px-1">
         <Input
-          placeholder="Filter content..."
-          value={(table.getColumn('changes')?.getFilterValue() as string) ?? ''}
+          placeholder="Filter section..."
+          value={(table.getColumn('section')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('changes')?.setFilterValue(event.target.value)
+            table.getColumn('section')?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

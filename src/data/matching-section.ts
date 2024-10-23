@@ -1,4 +1,4 @@
-interface ChangeDetails {
+export interface ChangeDetails {
   section: string;
   difference: string;
   impact: string;
